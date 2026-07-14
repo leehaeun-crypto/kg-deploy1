@@ -1,0 +1,141 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Malgun Gothic", sans-serif;
+  background: linear-gradient(160deg, #1a1333 0%, #2d1b4e 50%, #1a1333 100%);
+  color: #f0eaff;
+}
+
+main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 64px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  text-align: center;
+}
+
+.title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #ffd76a, #ff9de2, #a78bfa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.subtitle {
+  color: #c4b8e8;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.form {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.input {
+  flex: 1;
+  padding: 14px 18px;
+  font-size: 1rem;
+  border: 2px solid #4c3a7d;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #f0eaff;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input::placeholder {
+  color: #8f7fc0;
+}
+
+.input:focus {
+  border-color: #a78bfa;
+}
+
+.button {
+  padding: 14px 22px;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #7c3aed, #db2777);
+  color: #fff;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.result {
+  width: 100%;
+  padding: 28px 24px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid #4c3a7d;
+  text-align: left;
+  line-height: 1.9;
+  font-size: 1.02rem;
+  white-space: pre-wrap;
+  animation: fadeIn 0.5s ease;
+}
+
+.error {
+  color: #ff9d9d;
+  font-size: 0.95rem;
+}
+
+.loading {
+  color: #c4b8e8;
+  font-size: 0.95rem;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
