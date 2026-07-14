@@ -12,8 +12,9 @@ interface PastLifeRecord {
 
 interface PastLifeResult {
   name: string;
+  tone: string;
+  story: string;
   record: PastLifeRecord;
-  story: string | null;
 }
 
 const FIELD_LABELS: { key: keyof PastLifeRecord; icon: string; label: string }[] = [
@@ -21,7 +22,7 @@ const FIELD_LABELS: { key: keyof PastLifeRecord; icon: string; label: string }[]
   { key: "era", icon: "⏳", label: "시대" },
   { key: "death", icon: "🕯️", label: "사인" },
   { key: "achievement", icon: "🏆", label: "전생의 업적" },
-  { key: "memory", icon: "💭", label: "사람들은 나를 이렇게 기억한다" },
+  { key: "memory", icon: "💭", label: "사람들의 기억" },
 ];
 
 export default function Home() {
@@ -30,8 +31,7 @@ export default function Home() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  async function generate() {
     const trimmed = name.trim();
     if (!trimmed || loading) return;
 
@@ -61,12 +61,18 @@ export default function Home() {
     <main>
       <h1 className="title">🔮 나의 전생 알아보기</h1>
       <p className="subtitle">
-        이름을 입력하면 시간의 강 너머, 당신의 전생 기록을 열람해 드립니다.
+        이름을 입력하면 전생 기록 보관소의 수석 작가가
         <br />
-        당신은 전생에 누구였을까요… 아니, 무엇이었을까요?
+        매번 다른 문체로 당신의 전생 이야기를 집필해 드립니다.
       </p>
 
-      <form className="form" onSubmit={handleSubmit}>
+      <form
+        className="form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          generate();
+        }}
+      >
         <input
           className="input"
           type="text"
@@ -76,32 +82,47 @@ export default function Home() {
           maxLength={20}
         />
         <button className="button" type="submit" disabled={loading || !name.trim()}>
-          {loading ? "열람 중..." : "전생 보기"}
+          {loading ? "집필 중..." : "전생 보기"}
         </button>
       </form>
 
-      {loading && <p className="loading">✨ 시간의 강을 거슬러 전생 기록부를 펼치는 중...</p>}
+      {loading && (
+        <p className="loading">
+          ✍️ 수석 작가가 시간의 강 너머 기록을 열람하고 집필하는 중... (10~30초)
+        </p>
+      )}
       {error && <p className="error">{error}</p>}
 
       {result && (
         <div className="record">
-          <h2 className="record-title">📜 {result.name}님의 전생 기록부</h2>
-          <dl className="record-list">
-            {FIELD_LABELS.map(({ key, icon, label }) => (
-              <div className="record-row" key={key}>
-                <dt className="record-label">
-                  {icon} {label}
-                </dt>
-                <dd className="record-value">{result.record[key]}</dd>
-              </div>
-            ))}
-          </dl>
-          {result.story && (
-            <p className="story">
-              <span className="story-label">🔮 전생 감정사의 한마디</span>
-              {result.story}
-            </p>
-          )}
+          <h2 className="record-title">📜 {result.name}님의 전생 이야기</h2>
+          <p className="tone-badge">
+            이번 작문의 뉘앙스 · <strong>{result.tone}</strong>
+          </p>
+          <div className="story-main">{result.story}</div>
+
+          <details className="record-details">
+            <summary>📊 전생 기록 원본 열람</summary>
+            <dl className="record-list">
+              {FIELD_LABELS.map(({ key, icon, label }) => (
+                <div className="record-row" key={key}>
+                  <dt className="record-label">
+                    {icon} {label}
+                  </dt>
+                  <dd className="record-value">{result.record[key]}</dd>
+                </div>
+              ))}
+            </dl>
+          </details>
+
+          <button
+            className="button retry"
+            type="button"
+            onClick={generate}
+            disabled={loading}
+          >
+            🎲 다른 문체로 다시 듣기
+          </button>
         </div>
       )}
     </main>
